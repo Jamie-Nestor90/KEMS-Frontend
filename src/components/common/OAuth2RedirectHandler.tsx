@@ -1,4 +1,3 @@
-//2024-10-08 22:55분 버전 테스트
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 

@@ -1,33 +1,100 @@
-// Header.tsx
 import React from 'react';
-import '../../assets/styles/common/Header.css';
-import { LoginInfo } from '../../types/interface/LoginInfo';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
+import SearchIcon from '@mui/icons-material/Search';
 
-interface HeaderProps {
-    user: LoginInfo | null;
-    setUser: React.Dispatch<React.SetStateAction<LoginInfo | null>>;
-}
+const HeaderContainer = styled.header`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 52px;
+    background-color: #2f3136;
+    margin: 0px;
+`;
+const LeftSection = styled.div`
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+    margin-left: 80px;
+`;
+const HomeIconBtn = styled.div`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 8px;
+`;
+const PageTitle = styled.span`
+    font-size: 18px;
+    font-weight: bold;
+`;
+const SearchContainer = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 80px;
+`
+const SearchBox = styled.input`
+    width: 300px;
+    height: 32px;
+    padding: 0 40px 0 10px;
+    border: 1px solid #A6A6A6;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
 
-const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);  // 로그아웃 시 상태 초기화
-        window.location.href = '/login';
+    &:focus {
+        border-color: #A6A6A6; /* 테두리 색상을 검은색으로 변경 */
+        box-shadow: 0 0 10px rgba(0, 0, 0.4, 0.8); /* 검은색 계열 박스 섀도우 추가 */
+    }
+`;
+const SearchIconWrapper = styled.div`
+    position: absolute;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
+    color: #888;
+
+    &:hover {
+        color: #6799FF;
+    }
+`;
+
+const Header: React.FC = () => {
+    const navigate = useNavigate();
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // 검색 기능 구현 (현재는 콘솔에 입력값 출력)
+        console.log('검색어:', e.target.value);
+    };
+
+    const goHome = () => {
+        navigate('/myPage'); // 홈 경로로 이동
     };
 
     return (
-        <div id='header'>
-            <div className='header-container'>
-                <div className='login-user-info'>
-                    <span className='login-user-text'>{ user?.userName }</span> 님 환영합니다.
-                </div>
-                <div className='header-right'>
-                        <button className='header-btn' onClick={ handleLogout }>로그아웃</button>
-                </div>
-            </div>
-        </div>
+        <HeaderContainer>
+            <LeftSection>
+                <HomeIconBtn>
+                    <HomeIcon onClick={goHome} />
+                </HomeIconBtn>
+                <PageTitle>마이페이지</PageTitle>
+            </LeftSection>
+            <SearchContainer>
+                <SearchBox
+                    type="text"
+                    placeholder="이 페이지에서 검색..."
+                    onChange={handleSearch}
+                />
+                <SearchIconWrapper>
+                    <SearchIcon />
+                </SearchIconWrapper>
+            </SearchContainer>
+        </HeaderContainer>
     );
-}
+};
 
 export default Header;
